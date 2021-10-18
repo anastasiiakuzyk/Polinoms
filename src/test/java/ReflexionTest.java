@@ -15,7 +15,7 @@ class ReflexionTest {
     @Test
     @DisplayName("Positive: Number of setters + getters")
     public void numberOfSettersAndGetters() {
-        String gettersAndSetters = Reflexion.defineGettersAndSetters(Polinom.class);
+        String gettersAndSetters = model.ReflectionUtils.defineGettersAndSetters(Polinom.class);
         assertEquals(16, gettersAndSetters.split("etter").length);
     }
 
@@ -43,7 +43,7 @@ class ReflexionTest {
 
     @Test
     public void numberOfConstructors() {
-        String constructors = Reflexion.constructorsWithParametrs(RationalPolinom.class);
+        String constructors = model.ReflectionUtils.constructorsWithParametrs(RationalPolinom.class);
         int number = constructors.split(RationalPolinom.class.getName()).length;
         assertEquals(9, number);
     }
@@ -51,7 +51,7 @@ class ReflexionTest {
     @Test
     @DisplayName("Class contains annotation")
     public void hasAnnotation() {
-        boolean contains = Reflexion.listOfAnnotations(Polinom.class).contains("ClassInfo");
+        boolean contains = model.ReflectionUtils.listOfAnnotations(Polinom.class).contains("ClassInfo");
         assertTrue(contains);
     }
 
@@ -64,13 +64,13 @@ class ReflexionTest {
                 "protected x\n" +
                 "protected result\n" +
                 "public example\n";
-        String actual = Reflexion.getFields(Polinom.class);
+        String actual = model.ReflectionUtils.getFields(Polinom.class);
         assertEquals(expected, actual);
     }
 
     @Test
     public void classInterfaces() {
-        String interfaces = Reflexion.getRealizedInterfaces(Polinom.class);
+        String interfaces = model.ReflectionUtils.getRealizedInterfaces(Polinom.class);
         assertEquals("model.interfaces.Polinomable interfaces.Model java.lang.Cloneable ", interfaces);
     }
 

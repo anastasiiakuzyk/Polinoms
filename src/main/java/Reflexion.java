@@ -69,16 +69,16 @@ public class Reflexion {
 
         //getting class annotations
         Formalization.title("Annotations of " + polinomClass.getName());
-        System.out.println(listOfAnnotations(polinomClass));
+        System.out.println(model.ReflectionUtils.listOfAnnotations(polinomClass));
 
         //getting superclass
         Formalization.title("Superclass of " + rationalPolinomClass.getName() + " is");
-        System.out.println(superClassName(rationalPolinomClass));
+        System.out.println(model.ReflectionUtils.superClassName(rationalPolinomClass));
 
         //getting realized model.interfaces
         Class rationalPolinomClassSuperclass = rationalPolinomClass.getSuperclass();
         Formalization.title("Interfaces realized by " + rationalPolinomClassSuperclass.getName());
-        System.out.println(getRealizedInterfaces(rationalPolinomClassSuperclass));
+        System.out.println(model.ReflectionUtils.getRealizedInterfaces(rationalPolinomClassSuperclass));
 
         Formalization.title("Modifiers of " + polinomClass.getName());
         int polinomClassModifiers = polinomClass.getModifiers();
@@ -92,7 +92,7 @@ public class Reflexion {
         //CONSTRUCTORS
         //getting constructors
         Formalization.title("Constructors of " + rationalPolinomClass.getName() + " with parameters");
-        System.out.println(constructorsWithParametrs(rationalPolinomClass));
+        System.out.println(model.ReflectionUtils.constructorsWithParametrs(rationalPolinomClass));
 
         Formalization.title("Getting constructor by parameters types");
         Constructor<Polinom> polinomClassConstructor = polinomClass.getConstructor(double.class, int.class);
@@ -135,9 +135,9 @@ public class Reflexion {
         System.out.println(result);
 
         Formalization.title("Fileds of " + polinomClass.getName() + " with names, annotations, modifiers and types");
-        System.out.println(getFields(polinomClass));
+        System.out.println(model.ReflectionUtils.getFields(polinomClass));
 
-        //METHODS
+        //METHODSR
         Method[] methods = polinomClass.getMethods();
         Method[] declaredMethods = polinomClass.getDeclaredMethods();
         Method getResult = polinomClass.getMethod("getResult");
@@ -152,7 +152,7 @@ public class Reflexion {
 
         getResult.invoke(polinom);
         Formalization.title("Defining if method is getter or setter");
-        System.out.println(defineGettersAndSetters(Polinom.class));
+        System.out.println(model.ReflectionUtils.defineGettersAndSetters(Polinom.class));
 
         //accessing private methods
         Method generateCoefs = polinomClass.getDeclaredMethod("generateCoefs");
@@ -194,92 +194,5 @@ public class Reflexion {
         System.out.println("Degree is: " + degree);
 //        proxy.setDegree(5);
 
-    }
-
-    static String constructorsWithParametrs(Class<? extends Polinom> rationalPolinomClass) {
-        Constructor<?>[] rationalPolinomClassConstructors = rationalPolinomClass.getConstructors();
-        String str = "";
-        for (Constructor constr : rationalPolinomClassConstructors) {
-            str += constr.getName() + "(";
-            for (Class param : constr.getParameterTypes()) {
-                str += param.getName() + " ";
-            }
-            str += ")\n";
-        }
-        return str;
-    }
-
-    public static String listOfAnnotations(Class<Polinom> polinomClass) {
-        String str = "";
-        for (Annotation annotation : polinomClass.getAnnotations()) {
-            if (annotation instanceof ClassInfo) {
-                str += annotation;
-            }
-        }
-        return str;
-    }
-
-    public static String superClassName(Class cl) {
-        Class<?> superclass = cl.getSuperclass();
-        return superclass.getName();
-    }
-
-    public static String getRealizedInterfaces(Class cl) {
-        Class<?>[] interfaces = cl.getInterfaces();
-        String str = "";
-        for (Class aClass : interfaces) {
-            str += aClass.getName() + " ";
-        }
-        return str;
-    }
-
-    public static String getFields(Class cl){
-        String str = "";
-        for (Field field : cl.getDeclaredFields()) {
-            field.setAccessible(true);
-            if (field.isAnnotationPresent(FieldInfo.class)) {
-                for (Annotation annot : field.getDeclaredAnnotations()) {
-                    str += annot + " ";
-                }
-            }
-            int modifiers = field.getModifiers();
-            str += Modifier.toString(modifiers) + " " + field.getName() + "\n";
-
-        }
-        return str;
-    }
-
-    public static String defineGettersAndSetters(Class aClass) {
-        Method[] methods = aClass.getMethods();
-
-        String str = "";
-        for (Method method : methods) {
-            if (isGetter(method)) str += "getter: " + method+"\n";
-            if (isSetter(method)) str += "setter: " + method+"\n";
-        }
-        return str;
-    }
-
-    private static boolean isGetter(Method method) {
-        if (!method.getName().startsWith("get")) {
-            return false;
-        }
-        if (method.getParameterTypes().length != 0) {
-            return false;
-        }
-        if (void.class.equals(method.getReturnType())) {
-            return false;
-        }
-        return true;
-    }
-
-    private static boolean isSetter(Method method) {
-        if (!method.getName().startsWith("set")) {
-            return false;
-        }
-        if (method.getParameterTypes().length != 1) {
-            return false;
-        }
-        return true;
     }
 }
