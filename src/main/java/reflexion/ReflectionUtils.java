@@ -1,7 +1,8 @@
-package model;
+package reflexion;
 
 import annotations.ClassInfo;
 import annotations.FieldInfo;
+import model.Polinom;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;

@@ -1,4 +1,4 @@
-package mock;
+package controller;
 
 import interfaces.Model;
 import interfaces.View;
@@ -43,36 +43,6 @@ public class Controller {
                     break;
             }
         } while (true);
-
-
-    }
-
-    public void processReflexion() {
-        view.printMenu();
-        String variant = view.ask("Choose variant: ");
-        switch (variant) {
-            case "get superclass":
-                view.printInformation(model.getSuperClassSimpleName());
-                break;
-            case "get package":
-                view.printInformation(model.getPackageName());
-                break;
-            case "get class":
-                view.printInformation(model.getClassSimpleName());
-                break;
-            case "get methods":
-                model.getMethodInfo().forEach(view::printInformation);
-                break;
-            case "invoke methods":
-                model.listOfAnnotations().forEach(view::printInformation);
-                break;
-            case "exit":
-                System.exit(0);
-        }
-    }
-
-    public String invite() {
-        return view.ask("Hello, how are you?");
     }
 
     private Polinom choosePolinomConstructor() {
@@ -117,11 +87,39 @@ public class Controller {
     }
 
 
+
+    public void processReflexion() {
+        view.printMenu();
+        String variant = view.ask("Choose variant: ");
+        switch (variant) {
+            case "get superclass":
+                view.printInformation(model.getSuperClassSimpleName());
+                break;
+            case "get package":
+                view.printInformation(model.getPackageName());
+                break;
+            case "get class":
+                view.printInformation(model.getClassSimpleName());
+                break;
+            case "get methods":
+                model.getMethodInfo().forEach(view::printInformation);
+                break;
+            case "invoke methods":
+                model.listOfAnnotations().forEach(view::printInformation);
+                break;
+            case "exit":
+                System.exit(0);
+        }
+    }
+
+    public String invite() {
+        return view.ask("Hello, how are you?");
+    }
+
     public double processModel() throws Exception {
         if (model == null) {
             throw new Exception("Polinom unset!!");
         }
-
         return model.getResult();
     }
 

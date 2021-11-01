@@ -4,6 +4,7 @@ import annotations.ClassInfo;
 import annotations.FieldInfo;
 import annotations.MethodInfo;
 import model.interfaces.Polinomable;
+import patterns.behavioral.template.PolinomTemplate;
 import printing.Formalization;
 
 import java.util.Objects;
@@ -34,12 +35,18 @@ public class RationalPolinom extends Polinom {
         this.denumerator = denumerator;
     }
 
-    public RationalPolinom(int degreeNum, Polinom denumerator) {
+    public RationalPolinom(Polinomable numerator, Polinomable denumerator) {
+        super(numerator.getX(), numerator.getCoefsArray());
+        denumerator.setX(numerator.getX());
+        this.denumerator = denumerator;
+    }
+
+    public RationalPolinom(int degreeNum, Polinomable denumerator) {
         super(denumerator.getX(), degreeNum);
         this.denumerator = denumerator;
     }
 
-    public RationalPolinom(double[] coefsNum, Polinom denumerator) {
+    public RationalPolinom(double[] coefsNum, Polinomable denumerator) {
         super(denumerator.getX(), coefsNum);
         this.denumerator = denumerator;
     }
@@ -53,6 +60,18 @@ public class RationalPolinom extends Polinom {
         super(x, coefsNum);
         denumerator = new Polinom(x, coefsDenum);
     }
+
+
+    @Override
+    protected String showTypeOfPolinom() {
+        return "rational polinom";
+    }
+
+    @Override
+    public void showPolinomResult() {
+        System.out.println(getResult());
+    }
+
 
     @Override
     @MethodInfo(date = "19.09.2021", description = "calculates rational polinom")
@@ -86,7 +105,7 @@ public class RationalPolinom extends Polinom {
         this.denumerator = denumerator;
     }
 
-    public void setDenumeratorDegree(int degree){
+    public void setDenumeratorDegree(int degree) {
         denumerator.setDegree(degree);
     }
 
@@ -98,6 +117,7 @@ public class RationalPolinom extends Polinom {
     public double setDenumerator(double x) {
         return denumerator.setX(x);
     }
+
     public void setDenumerator() {
         denumerator.setCoefsArrayRand(false);
     }
@@ -136,6 +156,7 @@ public class RationalPolinom extends Polinom {
     public int hashCode() {
         return Objects.hash(denumerator, result);
     }
+
 
     @Override
     public String toString() {

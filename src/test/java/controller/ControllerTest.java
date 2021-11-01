@@ -1,4 +1,4 @@
-package mock;
+package controller;
 
 import interfaces.Model;
 import model.Polinom;

@@ -1,4 +1,4 @@
-import mock.Controller;
+import controller.Controller;
 import interfaces.Model;
 import model.Polinom;
 import view.View;

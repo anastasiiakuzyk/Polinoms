@@ -1,4 +1,4 @@
-package mock;
+package controller;
 
 import model.Polinom;
 import model.RationalPolinom;

@@ -1,5 +1,5 @@
-import annotations.ClassInfo;
-import annotations.FieldInfo;
+package reflexion;
+
 import annotations.MethodInfo;
 import model.interfaces.Polinomable;
 import model.Polinom;
@@ -9,9 +9,7 @@ import printing.Formalization;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class Reflexion {
 
@@ -41,7 +39,7 @@ public class Reflexion {
         System.out.println(rationalPolinom);
 
 
-        //Reflexion API
+        //reflexion.Reflexion API
         //CLASSES
         //getting classes using different variants
         Formalization.title("Class names");
@@ -69,16 +67,16 @@ public class Reflexion {
 
         //getting class annotations
         Formalization.title("Annotations of " + polinomClass.getName());
-        System.out.println(model.ReflectionUtils.listOfAnnotations(polinomClass));
+        System.out.println(ReflectionUtils.listOfAnnotations(polinomClass));
 
         //getting superclass
         Formalization.title("Superclass of " + rationalPolinomClass.getName() + " is");
-        System.out.println(model.ReflectionUtils.superClassName(rationalPolinomClass));
+        System.out.println(ReflectionUtils.superClassName(rationalPolinomClass));
 
         //getting realized model.interfaces
         Class rationalPolinomClassSuperclass = rationalPolinomClass.getSuperclass();
         Formalization.title("Interfaces realized by " + rationalPolinomClassSuperclass.getName());
-        System.out.println(model.ReflectionUtils.getRealizedInterfaces(rationalPolinomClassSuperclass));
+        System.out.println(ReflectionUtils.getRealizedInterfaces(rationalPolinomClassSuperclass));
 
         Formalization.title("Modifiers of " + polinomClass.getName());
         int polinomClassModifiers = polinomClass.getModifiers();
@@ -92,7 +90,7 @@ public class Reflexion {
         //CONSTRUCTORS
         //getting constructors
         Formalization.title("Constructors of " + rationalPolinomClass.getName() + " with parameters");
-        System.out.println(model.ReflectionUtils.constructorsWithParametrs(rationalPolinomClass));
+        System.out.println(ReflectionUtils.constructorsWithParametrs(rationalPolinomClass));
 
         Formalization.title("Getting constructor by parameters types");
         Constructor<Polinom> polinomClassConstructor = polinomClass.getConstructor(double.class, int.class);
@@ -135,7 +133,7 @@ public class Reflexion {
         System.out.println(result);
 
         Formalization.title("Fileds of " + polinomClass.getName() + " with names, annotations, modifiers and types");
-        System.out.println(model.ReflectionUtils.getFields(polinomClass));
+        System.out.println(ReflectionUtils.getFields(polinomClass));
 
         //METHODSR
         Method[] methods = polinomClass.getMethods();
@@ -152,7 +150,7 @@ public class Reflexion {
 
         getResult.invoke(polinom);
         Formalization.title("Defining if method is getter or setter");
-        System.out.println(model.ReflectionUtils.defineGettersAndSetters(Polinom.class));
+        System.out.println(ReflectionUtils.defineGettersAndSetters(Polinom.class));
 
         //accessing private methods
         Method generateCoefs = polinomClass.getDeclaredMethod("generateCoefs");

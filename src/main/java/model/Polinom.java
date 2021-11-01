@@ -5,13 +5,21 @@ import annotations.FieldInfo;
 import annotations.MethodInfo;
 import interfaces.Model;
 import model.interfaces.Polinomable;
+import patterns.behavioral.iterator.Collection;
+import patterns.behavioral.iterator.Iterator;
+import patterns.behavioral.strategy.Activity;
+import patterns.behavioral.template.PolinomTemplate;
+import patterns.creational.prototype.Copyable;
+import patterns.structural.decorator.PolinomResult;
 import printing.Formalization;
+import reflexion.ReflectionUtils;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 @ClassInfo(numberOfFields = 7, numberOfGetters = 6)
-public class Polinom implements Polinomable, Model, Cloneable {
+public class Polinom extends PolinomTemplate implements Polinomable, Model, Cloneable, Copyable, PolinomResult, Collection {
     public static final int MIN = -100;
     public static final int MAX = 100;
 
@@ -21,6 +29,7 @@ public class Polinom implements Polinomable, Model, Cloneable {
     protected double x;
     protected double result;
     public String example;
+    Activity activity;
 
     public Polinom() {
         setDegree(0);
@@ -40,6 +49,14 @@ public class Polinom implements Polinomable, Model, Cloneable {
     public Polinom(double x, double[] coefs) {
         setCoefsArray(coefs);
         setX(x);
+    }
+
+    public void setActivity(Activity activity) {
+        this.activity = activity;
+    }
+
+    public void executeActivity(){
+        activity.getIt(this);
     }
 
     //TODO: @Test проверить в рамках ли числа, количество (degree + 1)
@@ -108,6 +125,12 @@ public class Polinom implements Polinomable, Model, Cloneable {
             this.result += coefsMultipliedByXInStage[i];
         }
         return result;
+    }
+
+    public String getSpecialInfo(){
+        String print = "P(x) = ";
+        print += Formalization.result(getResult());
+        return print;
     }
 
     private double[] getCoefsMultipliedByXInStage() {
@@ -193,5 +216,44 @@ public class Polinom implements Polinomable, Model, Cloneable {
     @Override
     public List<String> listOfAnnotations() {
         return ReflectionUtils.listOfAnnotations(this.getClass());
+    }
+
+    @Override
+    public Object copy() {
+        Polinom copy = new Polinom(x, coefsArray);
+        return copy;
+    }
+
+    @Override
+    public Iterator getIterator() {
+        return new CoefsIterator();
+    }
+
+    @Override
+    protected String showTypeOfPolinom() {
+        return "polinom";
+    }
+
+    @Override
+    public void showPolinomResult() {
+        System.out.println(getResult());
+    }
+
+    private class CoefsIterator implements  Iterator{
+        int index;
+
+        @Override
+        public boolean hasNext() {
+            if(index < coefsArray.length){
+                return true;
+            }
+            return false;
+
+        }
+
+        @Override
+        public Object next() {
+            return coefsArray[index++];
+        }
     }
 }
